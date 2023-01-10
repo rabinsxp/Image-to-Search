@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/rabinsxp/Image-to-Search/issues"
   },
-  "homepage": "https://github.com/rabinsxp/Image-to-Search#readme"
+  "homepage": "https://github.com/rabinsxp/Image-to-Search#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "nodemon": "^2.0.20",
+    "sequelize": "^6.28.0"
+  }
 }
