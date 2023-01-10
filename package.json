@@ -1,0 +1,23 @@
+{
+  "name": "image-to-search",
+  "version": "1.0.0",
+  "description": "When user uploads an image, the image gets stored in the database. When image search is done, the images is compared with thousands of images and then visually similar images are presented. This features is best for image to product search query in eCommerce site.",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rabinsxp/Image-to-Search.git"
+  },
+  "keywords": [
+    "image",
+    "search",
+    "image",
+  "author": "Rabins Sharma Lamichhane",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rabinsxp/Image-to-Search/issues"
+  },
+  "homepage": "https://github.com/rabinsxp/Image-to-Search#readme"
+}
