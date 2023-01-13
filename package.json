@@ -4,7 +4,8 @@
   "description": "When user uploads an image, the image gets stored in the database. When image search is done, the images is compared with thousands of images and then visually similar images are presented. This features is best for image to product search query in eCommerce site.",
   "main": "app.js",
   "scripts": {
-    "test": "nodemon app.js"
+    "test": "nodemon app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -22,8 +23,15 @@
   },
   "homepage": "https://github.com/rabinsxp/Image-to-Search#readme",
   "dependencies": {
-    "cors": "^2.8.5",
+    "@tensorflow/tfjs": "^2.5.0",
+    "@tensorflow/tfjs-node": "^2.5.0",
+    "axios": "^1.2.2",
+    "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.17.1",
+    "multer": "^1.4.2",
     "nodemon": "^2.0.20",
+    "pg": "^8.8.0",
     "sequelize": "^6.28.0"
   }
 }
