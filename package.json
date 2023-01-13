@@ -25,12 +25,15 @@
   "dependencies": {
     "@tensorflow/tfjs": "^2.5.0",
     "@tensorflow/tfjs-node": "^2.5.0",
+    "assert": "^2.0.0",
     "axios": "^1.2.2",
     "body-parser": "^1.20.1",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "image-hash": "^5.3.1",
     "multer": "^1.4.2",
     "nodemon": "^2.0.20",
+    "path": "^0.12.7",
     "pg": "^8.8.0",
     "sequelize": "^6.28.0"
   }
