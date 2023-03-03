@@ -6,7 +6,7 @@ const app = express();
 app.use("/images", express.static("images"));
 const { imageHash } = require("image-hash");
 const path = require("path");
-const compare = require( "./hamming");
+const compare = require("./hamming");
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -38,20 +38,20 @@ sequelize
   });
 
 // Define the Image model for the database
-const Image = sequelize.define('image', {
+const Image = sequelize.define("image", {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
   fileName: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   hash: {
     type: Sequelize.STRING,
-    allowNull: false
-  }
+    allowNull: false,
+  },
 });
 
 app.post("/api/upload", upload.single("image"), async (req, res) => {
@@ -62,37 +62,6 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
   const tempFilePath = `images/${fileName}`;
   fs.writeFileSync(tempFilePath, req.file.buffer);
 
-const imageHashPromise = async (tempFilePath) => {
-  return new Promise((resolve, reject) => {
-    imageHash(tempFilePath, 16, true, (error, data) => {
-      if (error) reject(error);
-      resolve(data);
-    });
-  });
-};
-
-const myData = await imageHashPromise(tempFilePath); 
-console.log(myData, "myData");
- 
-    await Image.create({
-      fileName: fileName,
-      hash: myData,
-    })
-      .then(() => {
-        res.status(200).send("Image saved to database.");
-      })
-      .catch((err) => {
-        res.status(500).send(err);
-      });
-  }); 
-app.post("/api/similar-images", upload.single("image"), async (req, res) => { 
-  const image = req.file;
-  // Get the base name of the file and replace spaces with an underscore
-  const fileName = path.basename(image.originalname).replace(/ /g, "_");
-
-  // Save the file to a temporary location
-  const tempFilePath = `images/${fileName}`;
-  fs.writeFileSync(tempFilePath, req.file.buffer); 
   const imageHashPromise = async (tempFilePath) => {
     return new Promise((resolve, reject) => {
       imageHash(tempFilePath, 16, true, (error, data) => {
@@ -102,7 +71,39 @@ app.post("/api/similar-images", upload.single("image"), async (req, res) => {
     });
   };
 
-  const myData = await imageHashPromise(tempFilePath); 
+  const myData = await imageHashPromise(tempFilePath);
+  console.log(myData, "myData");
+
+  await Image.create({
+    fileName: fileName,
+    hash: myData,
+  })
+    .then(() => {
+      res.status(200).send("Image saved to database.");
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+app.post("/api/similar-images", upload.single("image"), async (req, res) => {
+  const image = req.file;
+  // Get the base name of the file and replace spaces with an underscore
+  const fileName = path.basename(image.originalname).replace(/ /g, "_");
+
+  // Save the file to a temporary location
+  const tempFilePath = `images/${fileName}`;
+  fs.writeFileSync(tempFilePath, req.file.buffer);
+  const imageHashPromise = async (tempFilePath) => {
+    return new Promise((resolve, reject) => {
+      imageHash(tempFilePath, 16, true, (error, data) => {
+        if (error) reject(error);
+        resolve(data);
+      });
+    });
+  };
+
+  const myData = await imageHashPromise(tempFilePath);
   console.log(myData, "myData");
 
   function GetSortOrder(prop) {
@@ -114,36 +115,35 @@ app.post("/api/similar-images", upload.single("image"), async (req, res) => {
       }
       return 0;
     };
-  }  
-let newHashings=[];
-    Image.findAll({
-      attributes: [
-        "id",
-        "hash" ]
-    })
-      .then((images) => {
-        images.map((image) => {
-         hash = compare(image.hash, myData);
-         id = image.id;
+  }
+  let newHashings = [];
+  Image.findAll({
+    attributes: ["id", "hash"],
+  })
+    .then((images) => {
+      images.map((image) => {
+        hash = compare(image.hash, myData);
+        id = image.id;
 
-         const Obj = {
-                        id, hash
-                     }
-         newHashings.push(Obj);
-        });
-           const sorted = newHashings.sort(function (x, y) {
-             return x["hash"] - y["hash"];
-           });
-        console.log(sorted, "sorted");
-        res.status(200).json({
-          sorted,
-          // images,
-        });
-      })
-      .catch((err) => {
-        res.status(500).send(err);
+        const Obj = {
+          id,
+          hash,
+        };
+        newHashings.push(Obj);
       });
-  });
+      const sorted = newHashings.sort(function (x, y) {
+        return x["hash"] - y["hash"];
+      });
+      console.log(sorted, "sorted");
+      res.status(200).json({
+        sorted,
+        // images,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
 app.post("/api/check", upload.single("image"), async (req, res) => {
   const image = req.file;
@@ -184,7 +184,7 @@ app.post("/api/check", upload.single("image"), async (req, res) => {
   // Send the similar images as a response
   res.json(similarImages);
 });
- 
+
 app.listen(8000, () => {
   console.log("Server listening on port 3000");
 });
